@@ -13,7 +13,14 @@ import 'package:to_do_flutter/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    final MaterialColor primaryColor =
+            App.createMaterialColor(const Color.fromARGB(255, 251, 220, 97)),
+        secondaryColor =
+            App.createMaterialColor(const Color.fromARGB(255, 166, 250, 92));
+    await tester.pumpWidget(App(
+      primarySwatch: primaryColor,
+      secondarySwatch: secondaryColor,
+    ));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
