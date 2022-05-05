@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_flutter/widgets/add_item.dart';
 import 'package:to_do_flutter/widgets/to_do_list.dart';
 
 void main() {
-  final MaterialColor primaryColor =
-          App.createMaterialColor(const Color.fromARGB(255, 251, 220, 97)),
-      secondaryColor =
-          App.createMaterialColor(const Color.fromARGB(255, 166, 250, 92));
-  runApp(App(
-    primarySwatch: primaryColor,
-    secondarySwatch: secondaryColor,
-  ));
+  final MaterialColor primaryColor = App.createMaterialColor(
+        const Color.fromARGB(255, 176, 217, 236),
+      ),
+      secondaryColor = App.createMaterialColor(
+        const Color.fromARGB(255, 79, 45, 34),
+      );
+  runApp(
+    App(
+      primarySwatch: primaryColor,
+      secondarySwatch: secondaryColor,
+    ),
+  );
 }
 
 class App extends StatelessWidget {
@@ -46,44 +51,68 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'To Do',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: primarySwatch)
-            .copyWith(secondary: secondarySwatch),
-        backgroundColor: primarySwatch,
-        scaffoldBackgroundColor: primarySwatch,
-        iconTheme: Theme.of(context).iconTheme.copyWith(
-              color: primarySwatch[500],
-              size: 48,
-            ),
-        textTheme: const TextTheme(
-          bodyText1: TextStyle(fontSize: 48),
-          bodyText2: TextStyle(fontSize: 24),
-        ),
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('What To Do?'),
+          colorScheme: ColorScheme.fromSwatch(
+                  primarySwatch: primarySwatch,
+                  primaryColorDark: secondarySwatch)
+              .copyWith(secondary: secondarySwatch),
+          backgroundColor: primarySwatch,
+          scaffoldBackgroundColor: primarySwatch,
           iconTheme: Theme.of(context).iconTheme.copyWith(
-                color: primarySwatch[900],
-                size: 48,
+                color: primarySwatch,
+                size: 24,
               ),
-        ),
-        body: ToDoList(),
-        drawer: const Text('Hello from Drawer'),
-        // floatingActionButton: Builder(
-        //   builder: (context) {
-        //     final ThemeData theme = Theme.of(context);
-        //     return FloatingActionButton(
-        //       child: Icon(
-        //         Icons.add,
-        //         size: theme.iconTheme.size,
-        //         color: theme.iconTheme.color,
-        //       ),
-        //       elevation: 10,
-        //       onPressed: () => Scaffold.of(context).openDrawer(),
-        //     );
-        //   },
-        // ),
-      ),
+          primaryIconTheme: IconThemeData(
+            color: primarySwatch,
+            size: 40,
+          ),
+          textTheme: Theme.of(context).textTheme.apply(
+                bodyColor: secondarySwatch,
+                displayColor: secondarySwatch,
+              ),
+          appBarTheme: AppBarTheme(
+            backgroundColor: secondarySwatch,
+            iconTheme: Theme.of(context).iconTheme.copyWith(
+                  color: primarySwatch,
+                  size: 40,
+                ),
+            titleTextStyle: TextStyle(
+              color: primarySwatch[500],
+              fontSize: 40,
+            ),
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            labelStyle: TextStyle(color: secondarySwatch[500]),
+            hintStyle: TextStyle(color: secondarySwatch[500]),
+          )),
+      home: Builder(builder: (context) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          appBar: AppBar(
+            title: const Text('What To Do?'),
+          ),
+          body: const ToDoList(),
+          drawer: const Text('Hello from Drawer'),
+          floatingActionButton: Builder(
+            builder: (context) {
+              final ThemeData theme = Theme.of(context);
+              return FloatingActionButton(
+                child: Icon(
+                  Icons.add,
+                  size: theme.primaryIconTheme.size,
+                  color: theme.primaryIconTheme.color,
+                ),
+                elevation: 10,
+                // onPressed: () => Scaffold.of(context).openDrawer(),
+                onPressed: () => showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return AddItem();
+                    }),
+              );
+            },
+          ),
+        );
+      }),
     );
   }
 }
