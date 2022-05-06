@@ -6,14 +6,14 @@ class ListItem extends StatelessWidget {
   final Item item;
   final int index;
   final Function? onClick;
-  final Function? onSwipe;
+  final Function? onDelete;
 
   const ListItem({
     required Key key,
     required this.item,
     required this.index,
     this.onClick,
-    this.onSwipe,
+    this.onDelete,
   }) : super(key: key);
 
   void emptyCallBack() {}
@@ -29,7 +29,7 @@ class ListItem extends StatelessWidget {
       ),
       direction: DismissDirection.endToStart,
       onDismissed: (DismissDirection direction) {
-        onSwipe is Function ? (onSwipe as Function)(index) : emptyCallBack();
+        onDelete is Function ? (onDelete as Function)(index) : emptyCallBack;
       },
       child: ListTile(
         tileColor: theme.colorScheme.background,
@@ -43,9 +43,13 @@ class ListItem extends StatelessWidget {
           ),
         ),
         title: Text(item.title),
-        trailing: Icon(
-          Icons.delete,
-          color: theme.colorScheme.secondary,
+        trailing: GestureDetector(
+          onDoubleTap:
+              onDelete is Function ? () => onDelete!(index) : emptyCallBack,
+          child: Icon(
+            Icons.delete,
+            color: theme.colorScheme.secondary,
+          ),
         ),
       ),
     );

@@ -40,7 +40,7 @@ class _ToDoListState extends State<ToDoList> {
                 item: widget.items![index],
                 index: index,
                 onClick: _onItemClick,
-                onSwipe: _onItemDelete,
+                onDelete: _onItemDelete,
                 key: ValueKey(
                   (widget.items as List<Item>)[index].id,
                 ), // or use widget.items![index].id which cast left side automatically
