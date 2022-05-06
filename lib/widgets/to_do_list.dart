@@ -4,15 +4,22 @@ import 'package:to_do_flutter/widgets/list_item.dart';
 import '../models/item.dart';
 
 class ToDoList extends StatefulWidget {
-  const ToDoList({Key? key}) : super(key: key);
+  final List<Item>? items;
+
+  const ToDoList({this.items, Key? key}) : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
-  State<ToDoList> createState() => _ToDoListState(toDoList: [
-        Item(id: 1, title: 'Item 1', isCompleted: true),
-        Item(id: 2, title: 'Item 2', isCompleted: false),
-        Item(id: 3, title: 'Item 3', isCompleted: false),
-      ]);
+  State<ToDoList> createState() => _ToDoListState(
+        toDoList: [
+          ...items ??
+              [
+                Item(id: 1, title: 'Item 1', isCompleted: true),
+                Item(id: 2, title: 'Item 2', isCompleted: false),
+                Item(id: 3, title: 'Item 3', isCompleted: false),
+              ]
+        ],
+      );
 }
 
 class _ToDoListState extends State<ToDoList> {
@@ -37,16 +44,21 @@ class _ToDoListState extends State<ToDoList> {
     return ListView.builder(
       itemCount: toDoList!.length,
       itemBuilder: (context, index) {
-        return Card(
-          child: ListItem(
-            item: toDoList![index],
-            index: index,
-            onClick: _onItemClick,
-            onSwipe: _onItemDelete,
-            key: ValueKey(
-              (toDoList as List<Item>)[index].id,
-            ), // or use toDoList![index].id which cast left side automatically
-          ),
+        return Column(
+          children: [
+            Card(
+              child: ListItem(
+                item: toDoList![index],
+                index: index,
+                onClick: _onItemClick,
+                onSwipe: _onItemDelete,
+                key: ValueKey(
+                  (toDoList as List<Item>)[index].id,
+                ), // or use toDoList![index].id which cast left side automatically
+              ),
+            ),
+            if (toDoList!.length != index + 1) const Divider(),
+          ],
         );
       },
     );
