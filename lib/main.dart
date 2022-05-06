@@ -165,7 +165,7 @@ class _AppState extends State<App> {
                     // ), // you can use shape on modal directly to give background shape
                     // you can also change bottomSheetTheme for bottomSheet style
                     builder: (context) {
-                      return AddItem(onSubmit: addItem, itemList: [..._itemList]);
+                      return AddItem(onSubmit: addItem, itemList: _itemList);
                     }),
               );
             },

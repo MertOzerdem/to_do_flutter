@@ -10,54 +10,43 @@ class ToDoList extends StatefulWidget {
 
   @override
   // ignore: no_logic_in_create_state
-  State<ToDoList> createState() => _ToDoListState(
-        toDoList: [
-          ...items ??
-              [
-                Item(id: 1, title: 'Item 1', isCompleted: true),
-                Item(id: 2, title: 'Item 2', isCompleted: false),
-                Item(id: 3, title: 'Item 3', isCompleted: false),
-              ]
-        ],
-      );
+  State<ToDoList> createState() => _ToDoListState();
 }
 
 class _ToDoListState extends State<ToDoList> {
-  List<Item>? toDoList;
-
-  _ToDoListState({required this.toDoList}) : assert(toDoList != null);
-
   void _onItemClick(index) {
     setState(
-      () => toDoList![index].isCompleted = !toDoList![index].isCompleted,
+      () =>
+          widget.items![index].isCompleted = !widget.items![index].isCompleted,
     );
   }
 
   void _onItemDelete(index) {
     setState(
-      () => (toDoList as List<Item>).removeAt(index),
+      () => (widget.items as List<Item>).removeAt(index),
     );
+    print(widget.items);
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: toDoList!.length,
+      itemCount: widget.items!.length,
       itemBuilder: (context, index) {
         return Column(
           children: [
             Card(
               child: ListItem(
-                item: toDoList![index],
+                item: widget.items![index],
                 index: index,
                 onClick: _onItemClick,
                 onSwipe: _onItemDelete,
                 key: ValueKey(
-                  (toDoList as List<Item>)[index].id,
-                ), // or use toDoList![index].id which cast left side automatically
+                  (widget.items as List<Item>)[index].id,
+                ), // or use widget.items![index].id which cast left side automatically
               ),
             ),
-            if (toDoList!.length != index + 1) const Divider(),
+            if (widget.items!.length != index + 1) const Divider(),
           ],
         );
       },

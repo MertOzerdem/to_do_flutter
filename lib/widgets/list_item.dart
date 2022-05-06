@@ -42,9 +42,7 @@ class ListItem extends StatelessWidget {
                 : theme.colorScheme.secondary,
           ),
         ),
-        title: const Text(
-          "Item",
-        ),
+        title: Text(item.title),
         trailing: Icon(
           Icons.delete,
           color: theme.colorScheme.secondary,
