@@ -88,9 +88,10 @@ class AddItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 0, bottom: 16.0),
+              // padding: const EdgeInsets.only(top: 0, bottom: 16.0),
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 16),
               child: ElevatedButton(
-                // onPressed: () => onSubmit(getNewList()),
                 onPressed: () {
                   setNewList();
                   Navigator.pop(context);

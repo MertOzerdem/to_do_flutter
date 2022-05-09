@@ -157,6 +157,7 @@ class _AppState extends State<App> {
                 elevation: 10,
                 // onPressed: () => Scaffold.of(context).openDrawer(),
                 onPressed: () => showModalBottomSheet(
+                    isScrollControlled: true,
                     context: context,
                     // shape: const RoundedRectangleBorder(
                     //   borderRadius: BorderRadius.vertical(
