@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 
 import '../models/item.dart';
 
 class AddItem extends StatelessWidget {
-  final Function(List<Item>) onSubmit;
-  final List<Item> itemList;
+  final void Function(ItemList) onSubmit;
+  final ItemList itemList;
   final TextEditingController taskController = TextEditingController();
 
   AddItem({
@@ -33,20 +34,34 @@ class AddItem extends StatelessWidget {
   // }
 
   void setNewList() {
-    Item biggestIdItem = itemList.first;
+    Item biggestIdItem = itemList.items.firstOrNull ??
+        Item(id: 0, title: taskController.text, isCompleted: false);
 
-    for (Item item in itemList) {
+    for (Item item in itemList.items) {
       if (item.id > biggestIdItem.id) biggestIdItem = item;
     }
 
-    onSubmit([
-      ...itemList,
-      Item(
-        id: biggestIdItem.id + 1,
-        title: taskController.text,
-        isCompleted: false,
+    onSubmit(
+      ItemList(
+        [
+          ...itemList.items,
+          Item(
+            id: biggestIdItem.id + 1,
+            title: taskController.text,
+            isCompleted: false,
+          ),
+        ],
       ),
-    ]);
+    );
+
+    // onSubmit([
+    //   ...itemList.items,
+    //   Item(
+    //     id: biggestIdItem.id + 1,
+    //     title: taskController.text,
+    //     isCompleted: false,
+    //   ),
+    // ]);
   }
 
   @override

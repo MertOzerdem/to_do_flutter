@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:to_do_flutter/widgets/add_item.dart';
 import 'package:to_do_flutter/widgets/to_do_list.dart';
 
@@ -12,6 +13,8 @@ void main() {
       secondaryColor = App.createMaterialColor(
         const Color.fromARGB(255, 79, 45, 34),
       );
+
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     App(
       primarySwatch: primaryColor,
@@ -24,9 +27,11 @@ class App extends StatefulWidget {
   final MaterialColor primarySwatch;
   final MaterialColor secondarySwatch;
 
-  const App(
-      {Key? key, required this.primarySwatch, required this.secondarySwatch})
-      : super(key: key);
+  const App({
+    Key? key,
+    required this.primarySwatch,
+    required this.secondarySwatch,
+  }) : super(key: key);
 
   static MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
@@ -53,15 +58,33 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  List<Item> _itemList = [
-    Item(id: 1, title: 'Item 1', isCompleted: true),
-    Item(id: 2, title: 'Item 2', isCompleted: false),
-    Item(id: 3, title: 'Item 3', isCompleted: false),
-  ];
+  final LocalStorage storage = LocalStorage('todo_app');
+  ItemList _itemList = ItemList([]);
 
-  void addItem(List<Item> itemList) {
+  @override
+  void initState() {
+    super.initState();
+    setInitialItems();
+  }
+
+  Future getStorage() async {
+    await storage.ready;
+    return storage.getItem('todos');
+  }
+
+  void setInitialItems() async {
+    List<dynamic> storageData = await getStorage();
+
     setState(() {
-      _itemList = [...itemList];
+      _itemList = ItemList.fromMap(storageData);
+    });
+  }
+
+  void addItem(ItemList itemList) {
+    storage.setItem('todos', itemList.toJSONEncodable());
+    // ListItem items = storage.getItem('todos');
+    setState(() {
+      _itemList = itemList;
     });
   }
 
